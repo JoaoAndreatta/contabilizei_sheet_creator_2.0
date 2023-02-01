@@ -44,16 +44,15 @@ class Depreciacao(customtkinter.CTk):
             self.confirm_sheet_button.grid(row=2, column=1, sticky="s", padx=(0, 160), pady=(0,0))
             self.create_sheet_button = customtkinter.CTkButton(self.create_buttons_frame, text='Criar!', state='disabled', fg_color='grey',
                                                                 command= lambda: [Depreciacao.set_save_destination(),
-                                                                                Depreciacao.create_depreciation_sheet(self),
-                                                                                Depreciacao.created_sucess(self)])
+                                                                                Depreciacao.create_depreciation_sheet(self)])
             self.create_sheet_button.grid(row=2, column=1, sticky="s", padx=(160, 0), pady=(0, 0))
 
-            # create sheet preview frame
-            self.sheet_frame = customtkinter.CTkFrame(self.main_frame, corner_radius=0)
+            # create sheet preview frame (future implementation)
+            self.sheet_frame = customtkinter.CTkFrame(self.main_frame, corner_radius=0, fg_color="transparent")
             self.sheet_frame.grid(row=3, column=1, columnspan=2, padx=(20, 20), pady=(20, 20), sticky="nsew")
 
-            self.not_avaiable = customtkinter.CTkLabel(self.sheet_frame, text='Função ainda não disponível!', height=250, font=font_principal, text_color='grey')
-            self.not_avaiable.grid(row=3,column=1, padx=(160,0), sticky='nswe')
+            #self.not_avaiable = customtkinter.CTkLabel(self.sheet_frame, text='Função ainda não disponível!', height=250, font=font_principal, text_color='grey')
+            #self.not_avaiable.grid(row=3,column=1, padx=(160,0), sticky='nswe')
 
     # create depreciation sheet function
     def create_depreciation_sheet(self):
@@ -95,6 +94,7 @@ class Depreciacao(customtkinter.CTk):
         for row in range(2, int(installments) + 2):
             cell = ws.cell(row,1)
             cell.value = formated_date.date() 
+            cell.number_format = 'dd-mm-yyyy'
             # increases by one the month
             formated_date = formated_date + relativedelta(months=1) 
             
@@ -113,7 +113,8 @@ class Depreciacao(customtkinter.CTk):
         # defining value column
         for row in range(2,ws.max_row + 1):
             cell = ws.cell(row,3)
-            cell.value = monthly_value 
+            cell.value = monthly_value
+            cell.number_format = '#,##0.00' 
 
         # defining debit account column
         for row in range(2, ws.max_row + 1):
@@ -126,7 +127,7 @@ class Depreciacao(customtkinter.CTk):
             cell.value = credit_account 
 
         #Criar o arquivo excel
-        wb.save(str(save_spot) + '/nova_planilha.xlsx')
+        wb.save(str(save_spot) + '/nova_planilha_depreciacao.xlsx')
 
     # get entries function
     def get_entries(self):
