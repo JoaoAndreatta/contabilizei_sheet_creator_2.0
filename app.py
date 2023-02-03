@@ -10,7 +10,7 @@ class App(customtkinter.CTk):
         super().__init__()
         
         # configure window
-        self.title("Contabilizei Planílhas")
+        self.title("Contabilizei Planilhas")
         self.geometry(f"{895}x{580}")
         self.resizable(width=False, height=False)
         self.wm_iconbitmap("media/icon.ico")

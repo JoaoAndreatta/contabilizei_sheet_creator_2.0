@@ -20,7 +20,7 @@ class Emprestimo():
         self.entries_frame.grid(row=1, column=1, rowspan=3 ,padx=(20, 20), pady=(20, 0), sticky="nsew")
 
         # loan widgets
-        self.depreciacao_label = customtkinter.CTkLabel(self.main_frame, text='Criar planílha de empréstimo', font=font_principal, text_color='#3b8ed0')
+        self.depreciacao_label = customtkinter.CTkLabel(self.main_frame, text='Criar planilha de empréstimo', font=font_principal, text_color='#3b8ed0')
         self.depreciacao_label.grid(row=0, column=1, sticky="nw", padx=(20, 0), pady=(20, 0))
         self.date_entry = customtkinter.CTkEntry(self.entries_frame, placeholder_text="Insira a data de retirada", 
                                                 width=200, height=40, border_width=2)

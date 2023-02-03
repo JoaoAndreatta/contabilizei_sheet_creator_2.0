@@ -18,7 +18,7 @@ class Depreciacao(customtkinter.CTk):
             self.entries_frame.grid(row=0, column=1, rowspan=3 ,padx=(20, 20), pady=(0, 0), sticky="nsew")
             
             # depreciation widgets
-            self.depreciacao_label = customtkinter.CTkLabel(self.entries_frame, text='Criar planílha de depreciação', font=font_principal, text_color='#3b8ed0')
+            self.depreciacao_label = customtkinter.CTkLabel(self.entries_frame, text='Criar planilha de depreciação', font=font_principal, text_color='#3b8ed0')
             self.depreciacao_label.grid(row=0, column=1, sticky="nw", pady=(20, 0))
             self.date_entry = customtkinter.CTkEntry(self.entries_frame, placeholder_text="Insira a data de inicio", 
                                                     width=200, height=40, border_width=2)
