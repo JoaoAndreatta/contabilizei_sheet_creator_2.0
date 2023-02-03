@@ -152,6 +152,17 @@ class Emprestimo():
         value_installments = value_installments.replace(',','.')
         value_installments = float(value_installments)
 
+        # to see until what row will be the short term
+        def diff_month(d1, d2):
+            return (d1.year - d2.year) * 12 + d1.month - d2.month
+        
+        if initial_date == pay_date:
+            # 24 months of short term
+            start_term = 24
+        else:
+            # less than 24 months
+            start_term = diff_month(pay_date, initial_date)
+
         # defining some predefined values and styles
         ws['B3'] = pay_date
         ws['B3'].number_format = 'dd-mm-yyyy'
@@ -159,21 +170,21 @@ class Emprestimo():
         ws['B2'].number_format = 'dd-mm-yyyy'
         ws['C2'] = value
         ws['C2'].number_format = '#,##0.00'
-        ws['D2'] = "=SUM(C3:C25)"
-        ws['E2'] = f"=SUM(C26:C{installments + 2})"
+        ws['D2'] = f"=SUM(C3:C{start_term + 2})"
+        ws['E2'] = f"=SUM(C{start_term + 3}:C{installments + 2})"
         ws['H2'] = initial_date
         ws['H2'].number_format = 'dd-mm-yyyy'
         ws['H3'] = pay_date
         ws['H3'].number_format = 'dd-mm-yyyy'
         ws['I2'] = "=SUM(D2+E2)-C2"
-        ws['J2'] = "=SUM(I3:I25)"
-        ws['K2'] = f"=SUM(I26:I{installments + 2})"
+        ws['J2'] = f"=SUM(I3:I{start_term + 2})"
+        ws['K2'] = f"=SUM(I{start_term + 3}:I{installments + 2})"
 
         # variables declarations
         n = 1
         term_1 = 2
         term_2 = 3
-        term_3 = 26
+        term_3 = start_term + 2
 
         # installments number column
         for row in range(3, installments + 3):
@@ -198,7 +209,7 @@ class Emprestimo():
         # short term column
         for row in range(3, ws.max_row + 1):
             cell = ws.cell(row,4)
-            cell.value = f'=D{term_1}-C{term_2}+C{term_3}'
+            cell.value = f'=D{term_1}-C{term_2}+C{term_3 + 1}'
             cell.number_format = '#,##0.00'
             term_1 += 1 
             term_2 += 1 
@@ -207,12 +218,12 @@ class Emprestimo():
         # redefining variables
         term_1 = 2
         term_2 = 3
-        term_3 = 26
+        term_3 = start_term + 2
 
         # long term column
         for row in range(3, ws.max_row + 1):
             cell = ws.cell(row,5)
-            cell.value = f'=E{term_1}-C{term_3}'
+            cell.value = f'=E{term_1}-C{term_3 + 1}'
             cell.number_format = '#,##0.00'
             term_1 += 1
             term_3 += 1
@@ -223,7 +234,7 @@ class Emprestimo():
         n = 1
         term_1 = 2
         term_2 = 3
-        term_3 = 26
+        term_3 = start_term + 2
         pay_date = Emprestimo.get_entries(self)[3]
         pay_date = datetime.datetime.strptime(pay_date,'%d/%m/%Y')
 
@@ -250,7 +261,7 @@ class Emprestimo():
         # installments value column
         for row in range(3, ws.max_row + 1):
             cell = ws.cell(row,10)
-            cell.value = f'=J{term_1}-I{term_2}+I{term_3}'
+            cell.value = f'=J{term_1}-I{term_2}+I{term_3 + 1}'
             cell.number_format = '#,##0.00'
             term_1 += 1 
             term_2 += 1 
@@ -259,21 +270,22 @@ class Emprestimo():
         # redefining variables
         term_1 = 2
         term_2 = 3
-        term_3 = 26
+        term_3 = start_term + 2
 
         for row in range(3, ws.max_row + 1):
             cell = ws.cell(row,11)
-            cell.value = f'=K{term_1}-I{term_3}'
+            cell.value = f'=K{term_1}-I{term_3 + 1}'
             cell.number_format = '#,##0.00'
             term_1 += 1
             term_3 += 1
 
         # redefining variables
         term_1 = 2
-        term_3 = 26
+        term_3 = start_term + 2
 
         wb.save(str(save_spot) + '/nova_planilha_emprestimo.xlsx')
         
+    
     def get_entries(self):
         
         #get values
